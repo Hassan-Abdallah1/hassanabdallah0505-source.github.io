@@ -21,7 +21,6 @@
       --shadow: 0 10px 30px rgba(0,0,0,.12);
       --ring: 0 0 0 3px rgba(20,184,166,.22);
     }
-
     html[data-theme="dark"]{
       --bg:#071a17;
       --card: rgba(11,42,36,.90);
@@ -44,25 +43,26 @@
         radial-gradient(900px 500px at 90% 10%, rgba(153,246,228,.14), transparent 55%),
         var(--bg);
       color:var(--text);
+      overflow-x:hidden;
     }
 
     a{ color: var(--muted); text-decoration:none; }
     a:hover{ text-decoration:underline; }
 
-    .wrap{ max-width:1040px; margin:0 auto; padding:26px 20px 70px; }
+    .wrap{ max-width:1040px; margin:0 auto; padding:18px 16px 70px; }
 
     .card{
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 18px;
-      padding: 22px;
+      padding: 18px;
       box-shadow: var(--shadow);
-      margin-top: 18px;
+      margin-top: 14px;
     }
 
     h1{
       margin:0 0 6px;
-      font-size: clamp(32px, 4vw, 44px);
+      font-size: clamp(28px, 5.2vw, 44px);
       line-height: 1.05;
     }
     h2{
@@ -74,7 +74,7 @@
     p{ margin:10px 0; line-height:1.6; }
     .muted{ color: var(--muted); }
 
-    ul{ margin: 8px 0 0 18px; }
+    ul{ margin: 8px 0 0 18px; padding-right: 6px; }
     li{ margin: 6px 0; line-height:1.55; }
 
     .hr{
@@ -86,7 +86,7 @@
 
     .footer{
       text-align:center;
-      margin-top: 22px;
+      margin-top: 18px;
       font-size: 14px;
       color: var(--muted);
     }
@@ -100,8 +100,8 @@
     }
     .nav-inner{
       max-width:1040px; margin:0 auto;
-      padding:12px 20px;
-      display:flex; gap:12px; align-items:center;
+      padding:10px 16px;
+      display:flex; gap:10px; align-items:center;
     }
     .brand{ display:flex; flex-direction:column; line-height:1.1; }
     .brand b{ font-size:15px; }
@@ -121,6 +121,7 @@
       background: color-mix(in srgb, var(--card) 55%, transparent);
       transition: transform .15s ease, background .15s ease, box-shadow .15s ease, border-color .15s ease;
       color: var(--text);
+      white-space: nowrap;
     }
     .nav-links a:hover{
       transform: translateY(-1px);
@@ -133,7 +134,6 @@
     }
 
     .theme-toggle{
-      margin-left:8px;
       border:1px solid var(--border);
       background: color-mix(in srgb, var(--card) 55%, transparent);
       color: var(--text);
@@ -149,6 +149,59 @@
     }
     .theme-toggle:hover{ transform: translateY(-1px); filter: brightness(1.05); }
     .theme-toggle:focus-visible{ box-shadow: var(--ring); outline:none; }
+
+    /* ✅ Mobile hamburger */
+    .menu-btn{
+      display:none;
+      border:1px solid var(--border);
+      background: color-mix(in srgb, var(--card) 55%, transparent);
+      color: var(--text);
+      padding:8px 10px;
+      border-radius:999px;
+      cursor:pointer;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+    .menu-btn:focus-visible{ box-shadow: var(--ring); outline:none; }
+
+    @media (max-width: 760px){
+      .nav-links{ display:none; }
+      .menu-btn{ display:inline-flex; align-items:center; gap:8px; margin-left:auto; }
+      .theme-toggle{ margin-left: 8px; }
+    }
+
+    /* ✅ Mobile menu panel */
+    .mobile-menu{
+      display:none;
+      border-top:1px solid var(--border);
+      background: color-mix(in srgb, var(--bg) 82%, transparent);
+    }
+    .mobile-menu.open{ display:block; }
+    .mobile-menu-inner{
+      max-width:1040px;
+      margin:0 auto;
+      padding:10px 16px 14px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+    .mobile-menu a{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:10px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background: color-mix(in srgb, var(--card) 65%, transparent);
+      color: var(--text);
+      font-size: 14px;
+      text-decoration:none;
+    }
+    .mobile-menu a:active{ transform: scale(.99); }
+
+    @media (max-width: 420px){
+      .mobile-menu-inner{ grid-template-columns: 1fr; }
+    }
 
     /* ===== Buttons / Inputs ===== */
     .btn{
@@ -198,6 +251,8 @@
       background: color-mix(in srgb, var(--card) 55%, transparent);
       transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease;
       color: var(--text);
+      max-width: 100%;
+      word-break: break-word;
     }
     .pill:hover{
       transform: translateY(-1px);
@@ -216,6 +271,7 @@
       align-items:center;
       gap:8px;
       flex-wrap:wrap;
+      max-width: 100%;
     }
     .copy{
       font-size: 12px;
@@ -226,12 +282,9 @@
       color: var(--text);
       cursor: pointer;
     }
-    .copy:hover{ filter: brightness(1.06); }
-    .copy:focus-visible{ box-shadow: var(--ring); outline:none; }
 
-    /* ===== Layout bits ===== */
+    /* ===== Layout ===== */
     .profile-img{
-      /* ✅ FIX: guaranteed square + no “egg” */
       width: 110px;
       height: 110px;
       aspect-ratio: 1 / 1;
@@ -239,15 +292,15 @@
       object-fit: cover;
       object-position: center;
       display: block;
-
       border: 3px solid rgba(20,184,166,.9);
       box-shadow: var(--shadow);
       background: rgba(255,255,255,.06);
+      flex: 0 0 auto;
     }
 
     .hero{
       display:flex;
-      align-items:center;
+      align-items:flex-start;
       justify-content:space-between;
       gap:18px;
       flex-wrap:wrap;
@@ -255,11 +308,20 @@
     .hero-left{
       display:flex;
       align-items:center;
-      gap:18px;
+      gap:16px;
       flex: 1 1 520px;
-      min-width: 280px;
+      min-width: 0;
     }
     .hero-actions{ margin-top: 10px; display:flex; gap:10px; flex-wrap:wrap; }
+
+    @media (max-width: 520px){
+      .profile-img{ width:92px; height:92px; aspect-ratio:1/1; }
+      .hero-left{ align-items:flex-start; }
+      .hero-actions{ flex-direction: column; }
+      .btn{ width:100%; justify-content:center; }
+      .chips{ gap:8px; }
+      .card{ padding:16px; }
+    }
 
     .badge{
       font-size: 12px;
@@ -281,6 +343,15 @@
     @media (min-width: 780px){
       .home-grid{ grid-template-columns: repeat(3, 1fr); }
     }
+
+    /* ✅ On phones: 2 columns looks nicer than 1 long list */
+    @media (max-width: 620px){
+      .home-grid{ grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 420px){
+      .home-grid{ grid-template-columns: 1fr; }
+    }
+
     .topic-card{
       display:block;
       border:1px solid var(--border);
@@ -289,6 +360,7 @@
       padding: 14px;
       color: var(--text);
       transition: transform .15s ease, background .15s ease, border-color .15s ease;
+      min-height: 92px;
     }
     .topic-card:hover{
       transform: translateY(-2px);
@@ -342,6 +414,12 @@
       gap: 10px;
       flex-wrap:wrap;
     }
+
+    /* ✅ Better stacking on small screens */
+    @media (max-width: 520px){
+      .timeline-top{ flex-direction: column; align-items:flex-start; gap:6px; }
+    }
+
     .timeline-title{
       font-weight: 800;
       margin: 0;
@@ -384,16 +462,11 @@
     .view{ display:none; }
     .view.active{ display:block; }
 
-    @media (max-width: 520px){
-      /* ✅ keep square on mobile too */
-      .profile-img{ width:92px; height:92px; aspect-ratio:1/1; }
-      .btn{ width:100%; justify-content:center; }
-    }
-
     @media (prefers-reduced-motion: reduce){
       html{ scroll-behavior:auto; }
       .js .reveal{ transition:none; }
       .topic-card:hover{ transform:none; }
+      .btn:hover{ transform:none; }
     }
   </style>
 </head>
@@ -408,6 +481,7 @@
         </div>
       </a>
 
+      <!-- Desktop links -->
       <div class="nav-links">
         <a href="#home" data-viewlink="home">Home</a>
         <a href="#about" data-viewlink="about">About</a>
@@ -418,15 +492,31 @@
         <a href="#contact" data-viewlink="contact">Contact</a>
       </div>
 
+      <!-- ✅ Mobile buttons -->
+      <button id="menuBtn" class="menu-btn" type="button" aria-expanded="false" aria-controls="mobileMenu">
+        ☰ Menu
+      </button>
       <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle theme">
         <span id="themeIcon" aria-hidden="true">🌙</span>
         <span>Theme</span>
       </button>
     </div>
+
+    <!-- ✅ Mobile menu panel -->
+    <div id="mobileMenu" class="mobile-menu" role="navigation" aria-label="Mobile">
+      <div class="mobile-menu-inner">
+        <a href="#home" data-viewjump="home">Home</a>
+        <a href="#about" data-viewjump="about">About</a>
+        <a href="#experience" data-viewjump="experience">Experience</a>
+        <a href="#education" data-viewjump="education">Education</a>
+        <a href="#skills" data-viewjump="skills">Skills</a>
+        <a href="#timeline" data-viewjump="timeline">Timeline</a>
+        <a href="#contact" data-viewjump="contact">Contact</a>
+      </div>
+    </div>
   </div>
 
   <div class="wrap">
-
     <!-- HOME -->
     <main id="view-home" class="view active">
       <section class="card reveal">
@@ -465,30 +555,25 @@
             <div class="topic-title">About</div>
             <div class="topic-desc">Quick intro + links</div>
           </a>
-
           <a class="topic-card" href="#experience" data-viewjump="experience">
             <div class="topic-title">Experience</div>
             <div class="topic-desc">Work history & responsibilities</div>
           </a>
-
           <a class="topic-card" href="#education" data-viewjump="education">
             <div class="topic-title">Education</div>
             <div class="topic-desc">Academic background</div>
           </a>
-
           <a class="topic-card" href="#skills" data-viewjump="skills">
             <div class="topic-title">Skills</div>
             <div class="topic-desc">Searchable skills</div>
           </a>
-
           <a class="topic-card" href="#timeline" data-viewjump="timeline">
             <div class="topic-title">Timeline</div>
-            <div class="topic-desc">Updates, progress & milestones</div>
+            <div class="topic-desc">Updates & milestones</div>
           </a>
-
           <a class="topic-card" href="#contact" data-viewjump="contact">
             <div class="topic-title">Contact</div>
-            <div class="topic-desc">Email, LinkedIn, location</div>
+            <div class="topic-desc">Email & LinkedIn</div>
           </a>
         </div>
       </section>
@@ -650,7 +735,7 @@
         <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;">
           <input id="timelineSearch" class="input" style="flex: 1 1 260px;"
             placeholder="Search updates (e.g., API, React, Python)..." />
-          <select id="timelineTag" class="input" style="flex: 0 0 220px;">
+          <select id="timelineTag" class="input" style="flex: 1 1 220px;">
             <option value="">All tags</option>
           </select>
         </div>
@@ -663,10 +748,6 @@
           <p id="timelineCount" class="section-note" style="margin:0;"></p>
           <button id="timelineMore" class="btn secondary" type="button" style="margin:0;">Load more</button>
         </div>
-
-        <p class="section-note">
-          Tip: add new updates inside the <code>timelineUpdates</code> array in the script at the bottom of this file.
-        </p>
       </section>
     </main>
 
@@ -710,13 +791,13 @@
   </div>
 
   <script>
-    // ===== Year =====
+    // Year
     (function(){
       const year = document.getElementById("year");
       if (year) year.textContent = new Date().getFullYear();
     })();
 
-    // ===== Theme (saved + system default) =====
+    // Theme
     (function initTheme(){
       const root = document.documentElement;
       const btn = document.getElementById("themeToggle");
@@ -730,7 +811,6 @@
         root.setAttribute("data-theme", mode);
         localStorage.setItem("theme", mode);
         if (icon) icon.textContent = (mode === "dark") ? "☀️" : "🌙";
-        btn.setAttribute("aria-label", `Switch to ${mode === "dark" ? "light" : "dark"} theme`);
       }
 
       if (saved === "light" || saved === "dark") setTheme(saved);
@@ -742,7 +822,7 @@
       });
     })();
 
-    // ===== Reveal on scroll =====
+    // Reveal
     (function(){
       const reveals = document.querySelectorAll(".reveal");
       if (!reveals.length) return;
@@ -757,11 +837,9 @@
       }
     })();
 
-    // ===== Copy buttons =====
+    // Copy buttons
     (function initCopyButtons(){
       const btns = document.querySelectorAll("[data-copy]");
-      if (!btns.length) return;
-
       btns.forEach(btn => {
         btn.addEventListener("click", async () => {
           const text = btn.getAttribute("data-copy") || "";
@@ -785,7 +863,40 @@
       });
     })();
 
-    // ===== Single-file routing =====
+    // Mobile menu
+    (function initMobileMenu(){
+      const btn = document.getElementById("menuBtn");
+      const menu = document.getElementById("mobileMenu");
+      if (!btn || !menu) return;
+
+      function closeMenu(){
+        menu.classList.remove("open");
+        btn.setAttribute("aria-expanded", "false");
+      }
+
+      btn.addEventListener("click", () => {
+        const open = menu.classList.toggle("open");
+        btn.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+
+      // close when clicking any mobile link
+      menu.addEventListener("click", (e) => {
+        const a = e.target.closest("a");
+        if (a) closeMenu();
+      });
+
+      // close on escape
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeMenu();
+      });
+
+      // close if you resize to desktop
+      window.addEventListener("resize", () => {
+        if (window.innerWidth > 760) closeMenu();
+      });
+    })();
+
+    // Single-file routing
     function setActiveView(view){
       const views = ["home","about","experience","education","skills","timeline","contact"];
       const safe = views.includes(view) ? view : "home";
@@ -817,12 +928,12 @@
 
     setActiveView(currentHashView());
 
-    // ===== Timeline data =====
+    // Timeline data
     const timelineUpdates = [
       {
         date: "2025-12-15",
-        title: "Portfolio upgraded: single-file multi-page layout",
-        text: "Combined all pages into one file with an interactive homepage and smooth navigation.",
+        title: "Portfolio upgraded: mobile-friendly + menu",
+        text: "Improved responsiveness on phones with a hamburger menu and better spacing.",
         tags: ["portfolio", "ui"],
         links: [{ label: "LinkedIn", url: "https://www.linkedin.com/in/hassan-abdallah-5248aa334" }]
       },
@@ -849,7 +960,7 @@
       }catch{ return iso || ""; }
     }
 
-    // Homepage preview
+    // Homepage timeline preview
     function renderTimelinePreview(limit = 3){
       const el = document.getElementById("latestTimeline");
       if (!el) return;
@@ -912,7 +1023,6 @@
 
       const data = [...timelineUpdates].sort((a,b) => (b.date || "").localeCompare(a.date || ""));
       const tags = Array.from(new Set(data.flatMap(x => x.tags || []))).sort((a,b)=>a.localeCompare(b));
-
       tags.forEach(t => {
         const opt = document.createElement("option");
         opt.value = t;
@@ -985,3 +1095,4 @@
   </script>
 </body>
 </html>
+
