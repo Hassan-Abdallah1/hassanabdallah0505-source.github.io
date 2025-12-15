@@ -343,8 +343,6 @@
     @media (min-width: 780px){
       .home-grid{ grid-template-columns: repeat(3, 1fr); }
     }
-
-    /* ✅ On phones: 2 columns looks nicer than 1 long list */
     @media (max-width: 620px){
       .home-grid{ grid-template-columns: 1fr 1fr; }
     }
@@ -414,8 +412,6 @@
       gap: 10px;
       flex-wrap:wrap;
     }
-
-    /* ✅ Better stacking on small screens */
     @media (max-width: 520px){
       .timeline-top{ flex-direction: column; align-items:flex-start; gap:6px; }
     }
@@ -525,9 +521,9 @@
             <img class="profile-img" src="profile.jpg" alt="Hassan Abdallah profile photo" />
             <div>
               <h1>Hi, I’m Hassan.</h1>
+
               <p class="muted">
-                Computer Science student building clean web apps and practical software.
-                Open to internships and opportunities in software engineering.
+                Computer Science (BSc) • London • Open to internships & software engineering roles
               </p>
 
               <div class="hero-actions">
@@ -879,18 +875,15 @@
         btn.setAttribute("aria-expanded", open ? "true" : "false");
       });
 
-      // close when clicking any mobile link
       menu.addEventListener("click", (e) => {
         const a = e.target.closest("a");
         if (a) closeMenu();
       });
 
-      // close on escape
       window.addEventListener("keydown", (e) => {
         if (e.key === "Escape") closeMenu();
       });
 
-      // close if you resize to desktop
       window.addEventListener("resize", () => {
         if (window.innerWidth > 760) closeMenu();
       });
