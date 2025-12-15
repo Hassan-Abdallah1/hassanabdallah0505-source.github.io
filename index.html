@@ -298,6 +298,19 @@
       flex: 0 0 auto;
     }
 
+    /* ✅ NEW: clickable profile wrapper */
+    .profile-link{
+      display:inline-block;
+      border-radius: 999px;
+      line-height: 0;
+      flex: 0 0 auto;
+      cursor: pointer;
+      outline: none;
+    }
+    .profile-link:hover .profile-img{ filter: brightness(1.05); }
+    .profile-link:active{ transform: scale(.99); }
+    .profile-link:focus-visible{ box-shadow: var(--ring); }
+
     .hero{
       display:flex;
       align-items:flex-start;
@@ -464,6 +477,58 @@
       .topic-card:hover{ transform:none; }
       .btn:hover{ transform:none; }
     }
+
+    /* ✅ Image lightbox */
+    .lightbox{
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(0,0,0,.72);
+      z-index: 999;
+    }
+    .lightbox.open{ display:flex; }
+    .lightbox-inner{
+      width: min(720px, 92vw);
+      border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+      background: color-mix(in srgb, var(--card) 85%, transparent);
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+    }
+    .lightbox-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom: 10px;
+    }
+    .lightbox-title{
+      margin:0;
+      font-weight: 800;
+      font-size: 14px;
+      color: var(--text);
+    }
+    .lightbox-close{
+      border:1px solid var(--border);
+      background: color-mix(in srgb, var(--bg) 70%, transparent);
+      color: var(--text);
+      padding: 8px 10px;
+      border-radius: 999px;
+      cursor:pointer;
+      font-size: 13px;
+    }
+    .lightbox-close:hover{ filter: brightness(1.06); }
+    .lightbox-img{
+      width: 100%;
+      height: auto;
+      border-radius: 14px;
+      display:block;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.06);
+    }
   </style>
 </head>
 
@@ -518,10 +583,13 @@
       <section class="card reveal">
         <div class="hero">
           <div class="hero-left">
-            <img class="profile-img" src="profile.jpg" alt="Hassan Abdallah profile photo" />
+            <!-- ✅ Clickable profile picture -->
+            <a class="profile-link" href="profile.jpg" target="_blank" rel="noopener" aria-label="Open profile picture">
+              <img class="profile-img" src="profile.jpg" alt="Hassan Abdallah profile photo" />
+            </a>
+
             <div>
               <h1>Hi, I’m Hassan.</h1>
-
               <p class="muted">
                 Computer Science (BSc) • London • Open to internships & software engineering roles
               </p>
@@ -588,7 +656,10 @@
       <section class="card reveal">
         <div class="hero">
           <div class="hero-left">
-            <img class="profile-img" src="profile.jpg" alt="Hassan Abdallah profile photo" />
+            <!-- ✅ Clickable profile picture (About too) -->
+            <a class="profile-link" href="profile.jpg" target="_blank" rel="noopener" aria-label="Open profile picture">
+              <img class="profile-img" src="profile.jpg" alt="Hassan Abdallah profile photo" />
+            </a>
             <div>
               <h1>About</h1>
               <p class="muted">Full-time Computer Science student (BSc) • London, United Kingdom</p>
@@ -784,6 +855,17 @@
     </main>
 
     <div class="footer">© <span id="year"></span> Hassan Abdallah</div>
+  </div>
+
+  <!-- ✅ Lightbox modal (opens when you click profile picture) -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Profile picture preview">
+    <div class="lightbox-inner">
+      <div class="lightbox-top">
+        <p class="lightbox-title">Profile picture</p>
+        <button id="lightboxClose" class="lightbox-close" type="button">Close</button>
+      </div>
+      <img id="lightboxImg" class="lightbox-img" src="profile.jpg" alt="Hassan Abdallah profile photo preview" />
+    </div>
   </div>
 
   <script>
@@ -1085,7 +1167,49 @@
 
       render();
     })();
+
+    /* ✅ Profile picture lightbox:
+       - Click the profile image (Home or About) opens modal
+       - Click outside / Close / ESC closes
+    */
+    (function initProfileLightbox(){
+      const lightbox = document.getElementById("lightbox");
+      const lightboxImg = document.getElementById("lightboxImg");
+      const closeBtn = document.getElementById("lightboxClose");
+      if (!lightbox || !lightboxImg || !closeBtn) return;
+
+      const profileLinks = document.querySelectorAll(".profile-link");
+      function open(){
+        lightbox.classList.add("open");
+        document.body.style.overflow = "hidden";
+        closeBtn.focus();
+      }
+      function close(){
+        lightbox.classList.remove("open");
+        document.body.style.overflow = "";
+      }
+
+      profileLinks.forEach(a => {
+        a.addEventListener("click", (e) => {
+          e.preventDefault();
+          // ensure modal uses the clicked image src (in case you change it later)
+          const img = a.querySelector("img");
+          if (img && img.getAttribute("src")) lightboxImg.src = img.getAttribute("src");
+          open();
+        });
+      });
+
+      closeBtn.addEventListener("click", close);
+
+      lightbox.addEventListener("click", (e) => {
+        // close if clicking the overlay (not the inner card)
+        if (e.target === lightbox) close();
+      });
+
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && lightbox.classList.contains("open")) close();
+      });
+    })();
   </script>
 </body>
 </html>
-
